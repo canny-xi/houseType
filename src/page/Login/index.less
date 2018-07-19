@@ -33,22 +33,37 @@
         }
        
     }
+    .house_Info{
+        padding:6px 0;
+        text-align: center;
+        border-top: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        font-size: .45rem;
+    }
     .houseImg{
         position: relative;
         .imgList{
-            height: 220px;
+            height: 260px;
         }
         .textBtn{
-
-            margin-top: 20px;
-
+            display: flex;
+            margin-top: 12px;
+            justify-content: space-between;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            z-index: 10;
+            background-color:  rgba(124, 120, 120, 0.5);
+            padding:5px 0;
+            width: 100%;
             .text{
                 border: 1px solid #bbb;
-                padding:3px 6px;
+                padding:4px 8px;
                 color: #444;
-                margin:0 15px;
-                border-radius: 4px;
-                padding-top: 5px;
+                border-radius: 3px;
+                background-color: #fff;
+                margin:0 20px;
+                border: none;
                 cursor: pointer;
                 &.active {
                     background-color: #409eff;
@@ -65,10 +80,11 @@
         font-size: .4rem;
         .text{
             padding-bottom: 6px;
+            font-weight:600
         }
         .hui{
             color: #737373;
-            padding-bottom: 6px;
+            padding-bottom: 25px;
         }
     }
     .title-text{
