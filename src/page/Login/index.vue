@@ -20,7 +20,7 @@
           </div>
         </div>
         <div class='textBtn'>
-          <span class='text' :class="current.type == tab ? 'active' : ''" @click="clickTip(index , tab)" v-for='(tab,index) in tabList'>{{tab}}</span>
+          <span class='text' :class="current.type == tab ? 'active' : ''" @click="clickTip(index , tab)" v-for='(tab,index) in tabList' :key='index'>{{tab}}</span>
           <!-- <span class='text' :class="current.type == '平面图' ? 'active' : ''" @click="clickTip(0 , '平面图')">平面图</span>
           <span class='text' :class="current.type == '效果图' ? 'active' : ''" @click="clickTip(1 , '效果图')">效果图</span>
           <span class='text' :class="current.type == '3D图' ? 'active' : ''" @click="clickTip(2 , '3D图')">3D图</span>
@@ -46,7 +46,7 @@
 
 <script>
 import Swiper from "swiper";
-import "swiper/dist/css/swiper.css";
+import "swiper/dist/idangerous.swiper.css";
 export default {
   data() {
     return {
@@ -66,12 +66,13 @@ export default {
   methods: {
     swiperLoad() {
       this.swiper = new Swiper(".swiper-container", {
-        on: {
-          slideChange: () => {
-            this.current = this.listImg[this.swiper.activeIndex]; //总图滑动 跳下tip
-          }
+        onSlideNext: () => {
+          this.current = this.listImg[this.swiper.activeIndex];
         },
-        observer: true
+        onSlidePrev: () => {
+          this.current = this.listImg[this.swiper.activeIndex];
+        },
+        runCallbacks: true
       });
     },
     cancel() {
@@ -83,16 +84,16 @@ export default {
       let t3 = this.submitForm.img_data["3D图"].length;
       let t4 = this.submitForm.img_data["实景图"].length;
       if (index == 0) {
-        this.swiper.slideTo(0, 0, false);
+        this.swiper.swipeTo(0, 0, false);
       }
       if (index == 1) {
-        this.swiper.slideTo(t1, 0, false);
+        this.swiper.swipeTo(t1, 0, false);
       }
       if (index == 2) {
-        this.swiper.slideTo(t1 + t2, 0, false);
+        this.swiper.swipeTo(t1 + t2, 0, false);
       }
       if (index == 3) {
-        this.swiper.slideTo(t1 + t2 + t3, 0, false);
+        this.swiper.swipeTo(t1 + t2 + t3, 0, false);
       }
     },
     async getHouseType() {

@@ -7,7 +7,6 @@ import Login from '@/page/Login'
 Vue.use(Router);
 
 export default new Router({
-  // base: '/admin/company/',
   routes: [
     {
       path: '/',

@@ -5,7 +5,7 @@
   "author": "niedongsheng <niedongsheng@doctorwork.com>",
   "private": true,
   "scripts": {
-    "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
+    "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js --port 8085  --host 192.168.0.115",
     "start": "npm run dev",
     "build": "node build/build.js"
   },
@@ -15,7 +15,7 @@
     "element-ui": "^2.3.7",
     "less": "^3.0.2",
     "less-loader": "^4.1.0",
-    "swiper": "^4.3.3",
+    "swiper": "2.7.6",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1",
     "vue-style-loader": "^3.1.2"
