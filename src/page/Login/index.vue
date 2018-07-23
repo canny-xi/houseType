@@ -85,15 +85,19 @@ export default {
       let t4 = this.submitForm.img_data["实景图"].length;
       if (index == 0) {
         this.swiper.swipeTo(0, 0, false);
+        this.current = this.listImg[0];
       }
       if (index == 1) {
         this.swiper.swipeTo(t1, 0, false);
+        this.current = this.listImg[t1];
       }
       if (index == 2) {
         this.swiper.swipeTo(t1 + t2, 0, false);
+        this.current = this.listImg[t1 + t2];
       }
       if (index == 3) {
         this.swiper.swipeTo(t1 + t2 + t3, 0, false);
+        this.current = this.listImg[t1 + t2 + t3];
       }
     },
     async getHouseType() {

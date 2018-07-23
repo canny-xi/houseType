@@ -5,7 +5,7 @@
   "author": "niedongsheng <niedongsheng@doctorwork.com>",
   "private": true,
   "scripts": {
-    "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js --port 8085  --host 192.168.0.115",
+    "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "start": "npm run dev",
     "build": "node build/build.js"
   },
