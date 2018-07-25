@@ -20,7 +20,7 @@
           </div>
         </div>
         <div class='textBtn'>
-          <span class='text' :class="current.type == tab ? 'active' : ''" @click="clickTip(index , tab)" v-for='(tab,index) in tabList' :key='index'>{{tab}}</span>
+          <span class='text' :class="current.type == tab.name? 'active' : ''" @click="clickTip(index , tab)" v-for='(tab,index) in tabList' :key='index'>{{tab.name}}</span>
         </div>
       </div>
       <div class='houseInfo'>
@@ -63,7 +63,7 @@ export default {
     showPreview() {
       this.$router.push({
         name: "preview",
-        query: { id: this.$route.query.id }
+        query: { house_type_id: this.$route.query.house_type_id }
       });
     },
     swiperLoad() {
@@ -80,27 +80,9 @@ export default {
     cancel() {
       this.show = false;
     },
-    clickTip(index, name) {
-      let t1 = this.submitForm.img_data["平面图"].length;
-      let t2 = this.submitForm.img_data["效果图"].length;
-      let t3 = this.submitForm.img_data["3D图"].length;
-      let t4 = this.submitForm.img_data["实景图"].length;
-      if (index == 0) {
-        this.swiper.swipeTo(0, 0, false);
-        this.current = this.listImg[0];
-      }
-      if (index == 1) {
-        this.swiper.swipeTo(t1, 0, false);
-        this.current = this.listImg[t1];
-      }
-      if (index == 2) {
-        this.swiper.swipeTo(t1 + t2, 0, false);
-        this.current = this.listImg[t1 + t2];
-      }
-      if (index == 3) {
-        this.swiper.swipeTo(t1 + t2 + t3, 0, false);
-        this.current = this.listImg[t1 + t2 + t3];
-      }
+    clickTip(index, tab) {
+      this.swiper.swipeTo(tab.index, 0, false);
+      this.current = this.listImg[tab.index];
     },
     async getHouseType() {
       let res = await this.api.shareHouseType({
@@ -110,8 +92,11 @@ export default {
         this.submitForm = res.data;
         let arr = [];
         for (let tab in res.data.img_data) {
-          this.tabList.push(tab);
+          let tabTemp = {};
           let imgs = res.data.img_data[tab];
+          tabTemp.name = tab;
+          tabTemp.index = arr.length;
+          this.tabList.push(tabTemp);
           for (let img of imgs) {
             let temp = {};
             temp.type = tab;

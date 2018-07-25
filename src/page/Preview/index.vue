@@ -1,20 +1,27 @@
+<style lang="less" scoped src='./index.less'>
+</style>
+
 <template>
-    <div id="mock">
+    <div class="mock">
         <div class="layout" @click="getBack">
             <div class="nav">
                 <span class="title">动态相册</span>
             </div>
-            <div class="swiper-container">
-                <div class="swiper-wrapper" ref="mySwiper">
-                    <div class="swiper-slide" @click.stop="detail" v-for="(img,index) in listImg" :key="index" :style="{backgroundImage:'url(' + base + img + ')'}"></div>
+            <div class='houseImg'>
+                <div class='imgList'>
+                    <div class="swiper-container">
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide" @click.stop="detail" v-for="(data,index) in listImg" :key="index" :style="{backgroundImage: 'url(' + base+data.img +')'}"></div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="tags">
-                <div class="idx">{{name}} {{startIndex}}/{{tmplength}}</div>
-                <div class="aidx">全部{{aidx}}/{{total}}</div>
-                <ul class="flx">
-                    <li v-for="(item,index) in items" :key="index" class="tag" @click.stop="changeIndex(item,index)" :class="{active: item.start < idx && idx <=item.end}">{{item.name}}</li>
-                </ul>
+                <div class='textBtn'>
+                    <div>
+                        <!-- <div class="idx">{{name}} {{startIndex}}/{{tmplength}}</div> -->
+                        <div class="aidx">全部 {{img}}/{{total}}</div>
+                        <span class='text' :class="current.type == tab.name? 'active' : ''" @click.stop="clickTip(index , tab)" v-for='(tab,index) in tabList' :key='index'>{{tab.name}}</span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -27,148 +34,87 @@ export default {
   name: "preview",
   data: function() {
     return {
-      listImgs: [],
+      submitForm: {},
+      names: [],
       listImg: [],
-      activeIndex: 0,
-      tags: [],
+      show: true,
       current: {},
-      idx: 1,
-      tagName: "",
+      swiper: null,
+      tabList: [],
       total: 0,
-      items: [],
+      img: 1,
       name: "",
-      tmplength: 1,
       startIndex: 1,
-      swiper: null
+      tmplength: 1
     };
   },
-  computed: {
-    aidx: function() {
-      return this.idx;
-    }
+  mounted() {
+    this.getHouseType();
   },
   methods: {
     detail(e) {},
-    changeIndex() {},
     getBack() {
       this.$router.go(-1);
+    },
+    swiperLoad() {
+      this.swiper = new Swiper(".swiper-container", {
+        onSlideNext: () => {
+          this.current = this.listImg[this.swiper.activeIndex];
+          this.img = this.swiper.activeIndex + 1;
+        },
+        onSlidePrev: () => {
+          this.current = this.listImg[this.swiper.activeIndex];
+          this.img = this.swiper.activeIndex + 1;
+        },
+        runCallbacks: true
+      });
+    },
+    clickTip(index, tab) {
+      console.log(tab);
+      this.swiper.swipeTo(tab.index, 0, false);
+      this.current = this.listImg[tab.index];
+      this.img = tab.index;
+      this.name = tab.name;
+      this.startIndex = 1;
+      if (this.img == 0) {
+        this.img = 1;
+      }
+    },
+    async getHouseType() {
+      let res = await this.api.shareHouseType({
+        house_type_id: this.$route.query.house_type_id
+      });
+      if (res.code == 200) {
+        this.submitForm = res.data;
+        let arr = [];
+        for (let tab in res.data.img_data) {
+          let tabTemp = {};
+          let imgs = res.data.img_data[tab];
+          tabTemp.name = tab;
+          tabTemp.index = arr.length;
+          this.tabList.push(tabTemp);
+          for (let img of imgs) {
+            let temp = {};
+            temp.type = tab;
+            temp.img = img;
+            arr.push(temp);
+          }
+        }
+        this.listImg = arr;
+        this.current = this.listImg[0];
+        this.total = this.listImg.length;
+
+        if (this.total > 0) {
+          this.img = 1;
+        } else {
+          this.img = 0;
+        }
+        this.$nextTick(() => {
+          this.swiperLoad();
+        });
+      }
     }
-  },
-  mounted() {}
+  }
 };
 </script>
 
-<style scoped>
-.layout {
-  position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  background-color: rgba(0, 0, 0, 1);
-}
-
-.swiper-container {
-  transition-timing-function: cubic-bezier(0, 0, 1, 1);
-  position: absolute;
-  top: 50%;
-  /* left: 50%; */
-  -webkit-transform: translate(0, -50%);
-  transform: translate(0, -50%);
-  width: 100%;
-  height: 4.96rem;
-}
-.slide-wrapper {
-  width: 100%;
-  height: 100%;
-}
-
-.swiper-slide {
-  background-position: center;
-  background-size: cover;
-  width: 100%;
-  height: 100%;
-}
-.swiper-slide img {
-  width: 100%;
-  height: 100%;
-}
-
-.nav {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 1rem;
-  display: flex;
-  display: -webkit-flex;
-  align-items: center;
-  -webkit-align-items: center;
-}
-
-.back {
-  position: absolute;
-  right: 0.5rem;
-  top: 0;
-  width: 1rem;
-  padding-left: 10px;
-  color: aliceblue;
-  font-size: 32px;
-}
-.back img {
-  width: 100%;
-}
-
-.title {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  color: aliceblue;
-  font-size: 14px;
-}
-.tags {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 1rem;
-}
-.flx {
-  display: flex;
-  display: -webkit-flex;
-  width: 100%;
-  /* background-color: aliceblue; */
-  font-size: 12px;
-}
-.tag {
-  padding: 0.1rem;
-  background-color: white;
-  border: 1px solid #40a9ff;
-  margin-right: 5px;
-  border-radius: 1px;
-  width: 45px;
-}
-.idx {
-  position: absolute;
-  left: 0;
-  top: -50%;
-  font-size: 12px;
-  transform: translate(0, -50%);
-  margin-right: 0.2rem;
-  color: aliceblue;
-}
-.aidx {
-  position: absolute;
-  right: 0;
-  top: -50%;
-  font-size: 12px;
-  transform: translate(0, -50%);
-  margin-right: 0.2rem;
-  color: aliceblue;
-}
-
-.active {
-  background-color: #40a9ff;
-  color: white;
-}
-</style>
