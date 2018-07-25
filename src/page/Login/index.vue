@@ -5,7 +5,7 @@
     <div>
       <div class='title' v-if="show">
         <img class='bgImg' src='../../assets/images/bg@2x.png' />
-        <img class='x' src='../../assets/images/叉@2x.png' @click='cancel' />
+        <!-- <img class='x' src='../../assets/images/叉@2x.png' @click='cancel' /> -->
         <img class='logo' src='../../assets/images/43@2x.png' />
         <a href="http://itunes.apple.com/app/id1371978352?mt=8">
           <img class='butoonImg' src='../../assets/images/button@2x.png' /></a>
@@ -13,7 +13,7 @@
       <div class='house_Info'>户型详情</div>
       <div class='houseImg'>
         <div class='imgList'>
-          <div class="swiper-container">
+          <div class="swiper-container" @click='showPreview'>
             <div class="swiper-wrapper">
               <div class="swiper-slide" v-for="(data,index) in listImg" :key="index" :style="{backgroundImage: 'url(' + base+data.img +')'}"></div>
             </div>
@@ -21,10 +21,6 @@
         </div>
         <div class='textBtn'>
           <span class='text' :class="current.type == tab ? 'active' : ''" @click="clickTip(index , tab)" v-for='(tab,index) in tabList' :key='index'>{{tab}}</span>
-          <!-- <span class='text' :class="current.type == '平面图' ? 'active' : ''" @click="clickTip(0 , '平面图')">平面图</span>
-          <span class='text' :class="current.type == '效果图' ? 'active' : ''" @click="clickTip(1 , '效果图')">效果图</span>
-          <span class='text' :class="current.type == '3D图' ? 'active' : ''" @click="clickTip(2 , '3D图')">3D图</span>
-          <span class='text' :class="current.type == '实景图' ? 'active' : ''" @click="clickTip(3 , '实景图')">实景图</span> -->
         </div>
       </div>
       <div class='houseInfo'>
@@ -64,6 +60,12 @@ export default {
     this.getHouseType();
   },
   methods: {
+    showPreview() {
+      this.$router.push({
+        name: "preview",
+        query: { id: this.$route.query.id }
+      });
+    },
     swiperLoad() {
       this.swiper = new Swiper(".swiper-container", {
         onSlideNext: () => {
