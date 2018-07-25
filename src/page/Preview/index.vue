@@ -6,7 +6,7 @@
             </div>
             <div class="swiper-container">
                 <div class="swiper-wrapper" ref="mySwiper">
-                    <div class="swiper-slide" @click.stop="detail" v-for="(img,index) in listImg" :key="index" :style="{backgroundImage:'url(' + 'http://120.78.69.178:2902/' + img + ')'}"></div>
+                    <div class="swiper-slide" @click.stop="detail" v-for="(img,index) in listImg" :key="index" :style="{backgroundImage:'url(' + base + img + ')'}"></div>
                 </div>
             </div>
             <div class="tags">
