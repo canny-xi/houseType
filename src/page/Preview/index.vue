@@ -73,7 +73,7 @@ export default {
       console.log(tab);
       this.swiper.swipeTo(tab.index, 0, false);
       this.current = this.listImg[tab.index];
-      this.img = tab.index;
+      this.img = tab.index+1;
       this.name = tab.name;
       this.startIndex = 1;
       if (this.img == 0) {
