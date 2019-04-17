@@ -7,7 +7,7 @@
         <img class='bgImg' src='../../assets/images/bg@2x.png' />
         <!-- <img class='x' src='../../assets/images/叉@2x.png' @click='cancel' /> -->
         <img class='logo' src='../../assets/images/43@2x.png' />
-        <a href="http://itunes.apple.com/app/id1371978352?mt=8">
+        <a href="https://a.app.qq.com/o/simple.jsp?pkgname=com.yskj.yunqudao">
           <img class='butoonImg' src='../../assets/images/button@2x.png' /></a>
       </div>
       <div class='house_Info'>户型详情</div>
